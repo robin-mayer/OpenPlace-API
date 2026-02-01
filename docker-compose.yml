@@ -1,0 +1,35 @@
+name: OpenPlace API
+
+services:
+  postgres:
+    container_name: openplace_postgres
+    image: postgres:18
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: openplace
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+        - postgres:/var/lib/postgresql
+  server:
+    container_name: openplace_server
+    image: robinmayer/openplace-api:latest
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    mem_limit: 4g
+    environment:
+      DB_HOST: postgres
+      API_KEY: key
+      RESULT_SIZE: 5
+      JAVA_TOOL_OPTIONS: >
+        -XX:MaxRAMPercentage=70
+        -XX:InitialRAMPercentage=30
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres:
+

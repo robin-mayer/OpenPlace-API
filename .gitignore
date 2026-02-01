@@ -1,0 +1,7 @@
+.idea
+.DS_Store
+docker_volumes/
+data.osm.pbf
+filtered.osm.pbf
+data.geojson
+datasets/
