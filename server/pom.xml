@@ -5,17 +5,17 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.2</version>
+		<version>4.1.1</version> <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent -->
 		<relativePath />
 	</parent>
 	<groupId>com.robin_mayer</groupId>
 	<artifactId>openplace</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<name>OpenPlace API</name>
 	<properties>
-		<java.version>24</java.version>
-		<kotlin.version>2.2.21</kotlin.version>
-		<org.json.version>20250517</org.json.version>
+		<java.version>25</java.version>
+		<kotlin.version>2.4.10</kotlin.version> <!-- https://kotlinlang.org/docs/releases.html -->
+		<org.json.version>20260814</org.json.version> <!-- https://mvnrepository.com/artifact/org.json/json -->
 	</properties>
 	<dependencies>
 		<dependency>
