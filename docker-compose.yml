@@ -5,14 +5,12 @@ services:
     container_name: openplace_postgres
     image: postgres:18
     restart: unless-stopped
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_DB: openplace
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     volumes:
-        - postgres:/var/lib/postgresql
+      - postgres:/var/lib/postgresql
   server:
     container_name: openplace_server
     image: robinmayer/openplace-api:latest
@@ -32,4 +30,3 @@ services:
 
 volumes:
   postgres:
-
