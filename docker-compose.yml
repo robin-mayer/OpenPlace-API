@@ -21,7 +21,6 @@ services:
     environment:
       DB_HOST: postgres
       API_KEY: key
-      RESULT_SIZE: 5
       IMPORT_AUTO_URL:
       JAVA_TOOL_OPTIONS: >
         -XX:MaxRAMPercentage=70

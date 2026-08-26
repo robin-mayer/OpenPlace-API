@@ -6,8 +6,7 @@ Autocomplete addresses easily.
 
 1. Download [docker-compose.yml](https://github.com/robin-mayer/OpenPlace-API/blob/development/docker-compose.yml)
 2. Set ``API_KEY`` to a random string of your choice
-3. Optionally: Set the amount of search results in as ``RESULT_SIZE``
-4. Get the download link of your favorite OSM extract from [GEOFABRIK](https://download.geofabrik.de/index.html)
+3. Get the download link of your favorite OSM extract from [GEOFABRIK](https://download.geofabrik.de/index.html)
 
 Then choose one of the two import methods below.
 
