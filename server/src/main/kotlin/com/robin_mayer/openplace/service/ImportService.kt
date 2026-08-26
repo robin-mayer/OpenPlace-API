@@ -4,7 +4,10 @@ import com.robin_mayer.openplace.repository.AddressRepository
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Lazy
+import org.springframework.context.event.EventListener
 import org.springframework.http.HttpMethod
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.scheduling.annotation.Async
@@ -21,7 +24,8 @@ import java.util.Locale
 @Service
 class ImportService(
     private val jdbcTemplate: JdbcTemplate,
-    private val addressRepository: AddressRepository
+    private val addressRepository: AddressRepository,
+    @Value($$"${import.auto.url:}") private val autoImportUrl: String,
 ) {
 
     @Lazy
@@ -36,6 +40,13 @@ class ImportService(
     private val IDX_HOUSE_NUMBER_ID = "idx_house_number_id"
     private val IDX_POST_CODE_ID = "idx_post_code_id"
     private val IDX_CITY_ID = "idx_city_id"
+
+    @EventListener(ApplicationReadyEvent::class)
+    fun autoImport() {
+        if(autoImportUrl.isNotBlank() && addressRepository.count() == 0L) {
+            startImport(autoImportUrl)
+        }
+    }
 
     fun startImport(downloadUrl: String): Boolean {
         if (importRunning) {

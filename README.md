@@ -7,15 +7,30 @@ Autocomplete addresses easily.
 1. Download [docker-compose.yml](https://github.com/robin-mayer/OpenPlace-API/blob/development/docker-compose.yml)
 2. Set ``API_KEY`` to a random string of your choice
 3. Optionally: Set the amount of search results in as ``RESULT_SIZE``
-3. Run `docker-compose up -d`
-4. Access the API at `http://localhost:8080`
-5. Get the download link of your favorite OSM extract from [GEOFABRIK](https://download.geofabrik.de/index.html)
-6. Start the import job with ``POST http://localhost:8080/import`` and request header `API-Key=your_api_key` and a body of: `
+4. Get the download link of your favorite OSM extract from [GEOFABRIK](https://download.geofabrik.de/index.html)
+
+Then choose one of the two import methods below.
+
+### Auto Import
+
+1. Set ``IMPORT_AUTO_URL`` to the download link, e.g. `https://download.geofabrik.de/europe/germany-latest.osm.pbf`
+2. Run `docker-compose up -d`
+3. Access the API at `http://localhost:8080`
+4. Check logs and wait for "Import of https://download.geofabrik.de/europe/germany-latest.osm.pbf completed"
+
+The import starts automatically once the server is ready, but only if the address table is still empty. This means it will not run again on subsequent restarts once data has been imported.
+
+### Manual Import
+
+1. Leave ``IMPORT_AUTO_URL`` empty
+2. Run `docker-compose up -d`
+3. Access the API at `http://localhost:8080`
+4. Start the import job with ``POST http://localhost:8080/import`` and request header `API-Key=your_api_key` and a body of: `
 {
     "downloadUrl": "https://download.geofabrik.de/europe/germany-latest.osm.pbf"
 }
 `
-7. Check logs and wait for ""Import of https://download.geofabrik.de/europe/germany-latest.osm.pbf completed""
+5. Check logs and wait for "Import of https://download.geofabrik.de/europe/germany-latest.osm.pbf completed"
 
 
 ## Usage
