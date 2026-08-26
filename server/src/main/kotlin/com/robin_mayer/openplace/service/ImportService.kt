@@ -17,7 +17,6 @@ import java.io.File
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -92,12 +91,38 @@ class ImportService(
             HttpMethod.GET,
             null
         ) { response ->
+            val contentLength = response.headers.contentLength
+            val numberFormat = NumberFormat.getInstance(Locale.US)
+            var lastLogTime = System.currentTimeMillis()
+            var downloaded = 0L
+
             response.body.use { input ->
-                Files.copy(
-                    input,
+                Files.newOutputStream(
                     Paths.get("data.osm.pbf"),
-                    StandardCopyOption.REPLACE_EXISTING
-                )
+                    java.nio.file.StandardOpenOption.CREATE,
+                    java.nio.file.StandardOpenOption.TRUNCATE_EXISTING
+                ).use { output ->
+                    val buffer = ByteArray(8192)
+                    var read: Int
+                    while (input.read(buffer).also { read = it } != -1) {
+                        output.write(buffer, 0, read)
+                        downloaded += read
+
+                        val currentTime = System.currentTimeMillis()
+                        if (currentTime - lastLogTime >= 5000) {
+                            lastLogTime = currentTime
+                            if (contentLength > 0) {
+                                val percentage = downloaded * 100 / contentLength
+                                log.info(
+                                    "Downloaded ${numberFormat.format(downloaded / 1024 / 1024)} MB " +
+                                            "of ${numberFormat.format(contentLength / 1024 / 1024)} MB ($percentage%)"
+                                )
+                            } else {
+                                log.info("Downloaded ${numberFormat.format(downloaded / 1024 / 1024)} MB")
+                            }
+                        }
+                    }
+                }
             }
             null
         }
